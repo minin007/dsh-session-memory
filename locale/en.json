@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "title": "Session Memory",
+    "description": "Keeps a small core and a searchable index in memory/, injects them across sessions, and shows them in a conversation view."
+  },
+  "view": {
+    "tab": "Memory"
+  }
+}

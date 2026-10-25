@@ -1,0 +1,12 @@
+- insert:
+    - id: session-memory
+      name: 'dsh-session-memory'
+      config:
+        maintenanceEveryTurns: 8
+        maxBootChars: 2500
+        bootIndexLimit: 60
+        maxSearchResults: 5
+        autoRecallThreshold: 0.55
+        autoRecallMinBm25: 6
+        autoRecallLimit: 3
+        sessionNoteEveryTurns: 6
