@@ -16,3 +16,5 @@ jobs:
         run: node scripts/test-memory.mjs
       - name: Client render smoke test
         run: node scripts/test-client.mjs
+      - name: Package check
+        run: npm pack --dry-run

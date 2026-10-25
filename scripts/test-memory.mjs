@@ -97,6 +97,11 @@ try {
 
   writeFileSync(join(root, 'sample.js'), 'export const x = 2\n')
   assert.equal(verifyAnchors(memoryDir, anchors).ok, false)
+  assert.throws(() => createFileAnchors(memoryDir, ['../outside.js']), /工作区/)
+  const crafted = `file:../outside.js#sha256:${'0'.repeat(64)}`
+  const craftedResult = verifyAnchors(memoryDir, [crafted])
+  assert.equal(craftedResult.ok, false)
+  assert.equal(craftedResult.anchors[0].reason, 'outside workspace')
   console.log('ok anchors')
 
   const status = memoryStatus(memoryDir, { maxChars: 800, indexLimit: 60 })

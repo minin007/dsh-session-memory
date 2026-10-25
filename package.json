@@ -1,7 +1,7 @@
 {
   "name": "dsh-session-memory",
   "version": "0.4.0",
-  "description": "Layered cross-session memory for DSH: frozen core boot, generated index, on-demand search, negative memory, and a conversation view.",
+  "description": "Layered cross-session memory for DSH: core boot, generated index, on-demand search, negative memory, and a conversation view.",
   "type": "module",
   "license": "MIT",
   "author": "minin007",
@@ -36,6 +36,7 @@
     "cordis.patch.yml",
     "locale/*.json",
     "icon.svg",
+    "scripts/*.mjs",
     "templates/*.md",
     "docs/*.md",
     "README.md",

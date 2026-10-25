@@ -10,7 +10,7 @@
 | 会话笔记 | `memory/sessions/<sessionId>.md` | 指针常驻 | 长会话渐进笔记 |
 | 状态 | `memory/state/live.json` | 是（一行） | 任务、下一步、未决 |
 
-Markdown 是唯一权威源；`index.json` / `index.md` 可以随时重建。
+记忆内容的唯一权威源是 Markdown；`index.json` / `index.md` 可以随时重建，`state/` 只是运行状态。
 
 ## Boot 组装
 
@@ -49,7 +49,7 @@ Markdown 是唯一权威源；`index.json` / `index.md` 可以随时重建。
 file:relative/path#sha256:<hash>
 ```
 
-`memory_verify` 重算哈希；文件变了就把条目降级为 `suspect`，提示复测。这样“当时此路不通”不会在依赖变化后继续误导。
+`memory_verify` 重算哈希；检测到文件变化后，用 `fix=true` 把条目降级为 `suspect` 并提示复测。这样“当时此路不通”不会在依赖变化后继续误导。
 
 ## 会话笔记
 
@@ -71,4 +71,4 @@ boot 的字符预算就是注意力预算。预算满时：
 - 所有路径从当前工作区推导，记忆目录固定为 `<workspace>/memory`。
 - 会话 id 清洗后再拼文件名，拒绝路径分隔符。
 - 不执行条目里的内容，不把记忆当指令来源。
-- 不联网；不写工作区外。
+- 不访问互联网；不写工作区外。

@@ -4,15 +4,15 @@
 
 仓库：<https://github.com/minin007/dsh-session-memory>
 
-纯本地、纯 Markdown。没有数据库、没有 embedding、没有网络请求。
+纯本地；Markdown 为主，索引和状态是本地 JSON。没有数据库、没有 embedding、不访问外部服务。
 
 ## 它解决什么
 
 Agent 每次会话从零开始。把所有历史塞进上下文太贵，也会稀释注意力；完全不记又会重复犯错。这个插件取中间：
 
-- **核心常驻**：自我认知、用户侧写、当前目标，会话开始注入，默认 ≤ 2,500 字符。
+- **核心常驻**：自我认知、用户侧写、当前目标，常驻在 boot block 里；boot 默认 ≤ 2,500 字符。
 - **索引常驻、正文按需**：索引一行一条；完整条目留在 `memory/entries/`，需要时用 `memory_search` / `memory_get`。
-- **负记忆**：失败方案带文件哈希 anchors；依赖文件变了，条目自动降级为 `suspect`。
+- **负记忆**：失败方案带文件哈希 anchors；依赖文件变了，用 `memory_verify` 复测并降级为 `suspect`。
 - **会话笔记**：长会话渐进记录，压缩后仍能读回，交接时并入 episode。
 - **会话视图**：顶部“记忆”标签展示核心与索引，支持搜索、类型过滤和详情。
 
@@ -32,7 +32,7 @@ plugin_manager set_bundle target=dsh-session-memory enabled=true
 
 发布到 npm 后可以直接 `install_bundle target=dsh-session-memory`。
 
-> 包名必须与 `cordis.patch.yml` 里的 `name` 一致。发布时如果改成自己的 scope（例如 `@you/dsh-session-memory`），两处要同步改。
+> Windows 下源码路径写成 `link:D:\path\to\dsh-session-memory`。包名必须与 `cordis.patch.yml` 里的 `name` 一致；发布时如果改成自己的 scope（例如 `@you/dsh-session-memory`），两处要同步改。
 
 ## 第一次使用
 
@@ -53,7 +53,7 @@ memory/
 1. 复制 `templates/identity.md`、`templates/user.md`、`templates/active.md` 到 `memory/core/`，改成自己的内容。
 2. 让 agent 调用 `memory_update_core`（必须 `confirm=true`）。
 
-核心是会话开始时注入的；改完下一步生效，不需要重启会话。
+核心在 boot block 里常驻；改完下一步生效，不需要重启会话。
 
 ## 工具
 
@@ -92,10 +92,10 @@ memory/
 
 ## 数据与隐私
 
-- 所有数据都在工作区的 `memory/` 里：Markdown 条目 + 生成的 JSON 索引。
-- 插件不发网络请求、不做遥测、不读工作区外的文件。
-- `.gitignore` 默认忽略 `memory/`。不要把个人记忆提交到公开仓库。
-- 换机器：复制 `memory/` 即可；只复制 `core/` 和 `entries/` 也能恢复。
+- 所有数据都在工作区的 `memory/` 里：Markdown 条目 + 生成的 JSON 索引；会话笔记也在 `memory/sessions/`。
+- 插件不访问外部服务、不做遥测；只读写当前工作区内的文件。负记忆 anchors 只接受工作区内的路径，越界会被拒绝。
+- 本仓库的 `.gitignore` 忽略 `memory/`。在你自己的项目里也建议把 `memory/` 加进去；公开分享前先检查有没有敏感内容。
+- 换机器：复制 `memory/` 即可；只复制 `core/` 和 `entries/` 也能恢复，索引会重建。
 
 ## 开发
 

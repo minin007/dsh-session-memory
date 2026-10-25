@@ -1,8 +1,8 @@
 /**
  * Session memory Host half v2.
  *
- * - Boot: one frozen `systemPrompt.context()` snapshot per Agent, built from
- *   core + a small index; deep entries stay out of the prompt.
+ * - Boot: one boot context per Agent, rebuilt from core + a bounded index;
+ *   deep entries stay out of the prompt.
  * - Live: a tiny `systemPrompt.section()` with time/task/next step only.
  * - Tools: memory_search / memory_get / memory_write / memory_update_core /
  *   memory_reindex / memory_status.
@@ -416,7 +416,7 @@ export function apply(ctx, config) {
 
   ctx.tools.register({
     name: 'session_note',
-    description: '会话笔记：把当前会话写成结构化 Markdown（当前任务/进展/决定/坑与修正/下一步），供压缩后或交接时复用。传 content 覆盖写入；不传则读取。每 6 轮会提示更新。',
+    description: '会话笔记：把当前会话写成结构化 Markdown（当前任务/进展/决定/坑与修正/下一步），供压缩后或交接时复用。传 content 覆盖写入；不传则读取。默认每 6 轮提示更新。',
     parameters: {
       type: 'object',
       additionalProperties: false,
